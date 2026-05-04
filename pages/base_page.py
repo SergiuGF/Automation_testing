@@ -78,6 +78,9 @@ class BasePage:
         WebDriverWait(self.driver, timeout, poll_frequency=0.5).until(EC.presence_of_element_located(selector))
     def wait_for_elem_clickable(self, selector, timeout=30):
         WebDriverWait(self.driver, timeout, poll_frequency=0.5).until(EC.element_to_be_clickable(selector))
+    def wait_for_elements_presence(self, selector, timeout=30):
+        WebDriverWait(self.driver, timeout, poll_frequency=0.5).until(EC.presence_of_all_elements_located(selector))
+
 
     def click_if_present_by_selector(self, by, selector):
         elem_list = self.driver.find_elements(by, selector)

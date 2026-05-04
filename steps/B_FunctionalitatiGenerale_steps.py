@@ -90,10 +90,14 @@ def step_impl(context):
 
 @when("se aduna preturile produselor pentru a obtine suma acestora si se urmeaza pasii pentru finalizarea comenzii pana in pasul in care este afisata suma total (Price Total)")
 def step_impl(context):
-    elements = WebDriverWait.until(EC.presence_of_all_elements_located(CommonMethods.PRODUCTS_PRICE))
+    context.elements = WebDriverWait(context.browser, 10).until(
+        EC.presence_of_all_elements_located(CommonMethods.PRODUCTS_PRICE)
+    )
+
+
     prices = [
         float(el.text.replace("$", ""))
-        for el in elements
+        for el in context.elements
     ]
     context.total_products = sum(prices)
 
@@ -105,8 +109,10 @@ def step_impl(context):
     context.common_methods.wait_and_click(CommonMethods.CONTINUE_BTN, 5)
 @then("suma preturilor este egala cu cea afisata la rubrica suma total (Price Total)")
 def step_impl(context):
-    context.common_methods.wait_for_elem_presence(CommonMethods.PRICE_TOTAL_SECTION)
-    total_text = (CommonMethods.PRICE_TOTAL_SECTION).text
+    element = WebDriverWait(context.browser, 10).until(
+        EC.visibility_of_element_located(CommonMethods.PRICE_TOTAL_SECTION)
+    )
+    total_text = element.text
     # "Item total: $29.99" -> 29.99
     total_displayed = float(total_text.split("$")[1])
     # 🔥 assert
