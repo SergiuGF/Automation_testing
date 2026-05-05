@@ -11,7 +11,8 @@ from pages.base_page import BasePage
 
 class CommonMethods(BasePage):
     AUTENTIFICARE_URL = 'https://www.saucedemo.com/'
-
+    MAIN_PAGE_URL = 'https://www.saucedemo.com/inventory.html'
+    CART_URL = 'https://www.saucedemo.com/cart.html'
     USER_INPUT = (By.XPATH, '//*[@id="user-name"]')
     PASSWORD_INPUT = (By.XPATH, '//*[@id="password"]')
     LOGIN_BTN = (By.XPATH, '//*[@id="login-button"]')
@@ -37,6 +38,7 @@ class CommonMethods(BasePage):
     FINISH_BTN = (By.XPATH, '//*[@id="finish"]')
     SUCCESS_ORDER_MESSAGE = (By.XPATH, '//*[@id="checkout_complete_container"]/h2')
     PRICE_TOTAL_SECTION = (By.XPATH, '//*[@id="checkout_summary_container"]/div/div[2]/div[6]')
+    APP_LOGO = (By.CLASS_NAME, 'app_logo')
 
 
     BUTTONS = {

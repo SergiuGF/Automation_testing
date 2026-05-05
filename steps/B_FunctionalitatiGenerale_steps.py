@@ -55,14 +55,20 @@ def step_impl(context):
     context.common_methods.wait_for_elem_presence(CommonMethods.PRODUCT_IN_CART, 5)
     context.common_methods.check_if_element_is_present('PRODUCT_IN_CART')
     sleep(3)
+    # se creaza conditiile pentru scenariul urmator
+    context.common_methods.wait_and_click(CommonMethods.REMOVE_FROM_CART)
 
 
 """@FG_007"""
 @given('utilizatorul se afla pe Pagina Cosului de cumparaturi unde are adaugat cel putin un produs')
 def step_impl(context):
-    context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
-    context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
-    context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
+    try:
+        context.common_methods.wait_for_elem_presence(CommonMethods.APP_LOGO, 3)
+        context.browser.get(CommonMethods.MAIN_PAGE_URL)
+    except:
+        context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
+        context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
+        context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
     context.common_methods.wait_and_click(CommonMethods.PRODUCT_ADDED_TO_CART)
     context.common_methods.wait_and_click(CommonMethods.CART_BTN)
 @when('se actioneaza butonul REMOVE aferent produsului de interes')
@@ -81,9 +87,13 @@ def step_impl(context):
 """@FG_008"""
 @given("in cosul de cumparaturi sunt adaugate cel putin doua produse")
 def step_impl(context):
-    context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
-    context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
-    context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
+    try:
+        context.common_methods.wait_for_elem_presence(CommonMethods.APP_LOGO, 3)
+        context.browser.get(CommonMethods.MAIN_PAGE_URL)
+    except:
+        context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
+        context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
+        context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
     context.common_methods.wait_and_click(CommonMethods.PRODUCT_ADDED_TO_CART)
     context.common_methods.wait_and_click(CommonMethods.PRODUCT_ADDED_TO_CART_2nd)
     context.common_methods.wait_and_click(CommonMethods.CART_BTN)
@@ -93,8 +103,6 @@ def step_impl(context):
     context.elements = WebDriverWait(context.browser, 10).until(
         EC.presence_of_all_elements_located(CommonMethods.PRODUCTS_PRICE)
     )
-
-
     prices = [
         float(el.text.replace("$", ""))
         for el in context.elements
@@ -118,20 +126,25 @@ def step_impl(context):
     # 🔥 assert
     assert context.total_products == total_displayed, \
         f"Suma calculata {context.total_products} != suma afisata {total_displayed}"
-
-
-
-
-
-
-
+    # se creaza conditiile pentru scenariul urmator
+    while True:
+        context.browser.get(CommonMethods.CART_URL)
+        try:
+            context.common_methods.wait_for_elem_presence(CommonMethods.REMOVE_FROM_CART, 5)
+            context.common_methods.wait_and_click(CommonMethods.REMOVE_FROM_CART)
+        except:
+            break
 
 """@FG_009"""
 @given("in cosul de cumparaturi este adaugat cel putin un produs")
 def step_impl(context):
-    context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
-    context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
-    context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
+    try:
+        context.common_methods.wait_for_elem_presence(CommonMethods.APP_LOGO, 3)
+        context.browser.get(CommonMethods.MAIN_PAGE_URL)
+    except:
+        context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
+        context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
+        context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
     context.common_methods.wait_and_click(CommonMethods.PRODUCT_ADDED_TO_CART)
     context.common_methods.wait_and_click(CommonMethods.CART_BTN)
 @when("se actioneaza butonul Checkout")
@@ -143,7 +156,7 @@ def step_impl(context):
         EC.url_to_be("https://www.saucedemo.com/checkout-step-one.html")
     )
     assert context.browser.current_url == "https://www.saucedemo.com/checkout-step-one.html"
-@then("se insereaza datele personale in campurile aferente (nume, prenume si cod postal) si se actioneaza butonul Continue")
+@when("se insereaza datele personale in campurile aferente (nume, prenume si cod postal) si se actioneaza butonul Continue")
 def step_impl(context):
     context.common_methods.wait_and_type(CommonMethods.FIRST_NAME_INPUT, "FIRST_NAME")
     context.common_methods.wait_and_type(CommonMethods.LAST_NAME_INPUT, "LAST_NAME")
@@ -159,7 +172,7 @@ def step_impl(context):
 @when("se actioneaza butonul Finish")
 def step_impl(context):
     context.common_methods.wait_and_click(CommonMethods.FINISH_BTN, 5)
-@when("pe ecran este afisat un mesaj care indica faptul ca procesul a fost finalizat cu succes")
+@then("pe ecran este afisat un mesaj care indica faptul ca procesul a fost finalizat cu succes")
 def step_impl(context):
     context.common_methods.check_if_element_is_present('SUCCESS_ORDER_MESSAGE')
 

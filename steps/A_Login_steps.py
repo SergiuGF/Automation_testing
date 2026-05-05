@@ -20,6 +20,10 @@ def step_impl(context):
     )
     assert context.browser.current_url == "https://www.saucedemo.com/inventory.html"
 
+    #posibil se poate sterge urmatorul cod:
+    # # Se creaza conditiile pentru urmatorul scenariu
+    # context.browser.get(CommonMethods.AUTENTIFICARE_URL)
+
 """@Login_002"""
 # given a fost deja definit
 @when("se insereaza credentiale invalide in campurile USERNAME, respectiv PASSWORD si se actioneaza butonul LOGIN")
@@ -34,9 +38,13 @@ def step_impl(context):
 """@Login_003"""
 @given('utilizatorul se afla pe Pagina Principala')
 def step_impl(context):
-    context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
-    context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
-    context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
+    try:
+        context.common_methods.wait_for_elem_presence(CommonMethods.APP_LOGO, 3)
+        context.browser.get(CommonMethods.MAIN_PAGE_URL)
+    except:
+        context.common_methods.wait_and_type(CommonMethods.USER_INPUT, "standard_user")
+        context.common_methods.wait_and_type(CommonMethods.PASSWORD_INPUT, "secret_sauce")
+        context.common_methods.wait_and_click(CommonMethods.LOGIN_BTN)
 @when('se actioneaza butonul de tip burger din partea stanga-sus, iar din optiunile alese se actioneaza butonul LOGOUT')
 def step_iml(context):
     # posibil se poate sterge codul cu alerta
