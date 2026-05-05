@@ -3,7 +3,8 @@ from driver import Driver
 from pages.common_methods import CommonMethods
 
 def before_all(context):
-    context.driver_wrapper = Driver()
+    browser = context.config.userdata.get("browser", "chrome")
+    context.driver_wrapper = Driver(browser)
 
 def before_scenario(context, scenario):
     # driverul este intotdeauna cel activ
