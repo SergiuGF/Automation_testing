@@ -9,7 +9,7 @@ __pycache__/
 .idea/
 
 # Reports & screenshots (păstrăm doar folderele)
-reports/*
+#reports/*
 screenshots/*
 !reports/.gitkeep
 !screenshots/.gitkeep
